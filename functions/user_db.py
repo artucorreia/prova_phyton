@@ -6,14 +6,14 @@ def sign_up(user, name, password):
     
     return True
 
-def sign_in(userConection, name, password):
-    userCursor = userConection.cursor()
+def sign_in(userConnection, name, password):
+    userCursor = userConnection.cursor()
     sql = 'select * from User where user_name LIKE ? and user_password LIKE ?'
     userCursor.execute(sql, [name, password])
     return userCursor.fetchall()
 
-def display_users(userConection):
-    userCursor = userConection.cursor()
+def display_users(userConnection):
+    userCursor = userConnection.cursor()
     sql = 'select * from User'
     userCursor.execute(sql)
     return userCursor.fetchall()

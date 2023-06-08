@@ -1,8 +1,8 @@
-def sign_up(user, name, password):
-    userCursor = user.cursor()
+def sign_up(userConection, name, password):
+    userCursor = userConection.cursor()
     sql = f'INSERT INTO User(user_name, user_password) VALUES (?, ?)'
-    userCursor.execute(sql, [name, password])
-    user.commit()
+    userCursor.execute(sql, [name.upper(), password.upper()])
+    userConection.commit()
     return True
 
 def sign_in(userConnection, name, password):

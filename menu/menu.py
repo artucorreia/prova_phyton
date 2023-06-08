@@ -1,5 +1,6 @@
 import sqlite3
 from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listAllProducts
+import os
 
 product = sqlite3.connect('Product')
 
@@ -8,12 +9,13 @@ def menu():
     while option != 6:
         print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os produtos\n6 - Voltar ao Início\n")
         option = int(input("Digite a opção: "))
+        os.system("cls")
         match option:
             case 1:
                 productName = input("Digite o nome do produto: ")
                 productValue = float(input("Digite o valor do produto: "))
                 createNewProduct(product, productName, productValue)
-                
+                os.system("cls")
             case 2:
                 productId = int(input('Insira o ID do produto: '))
                 opc = 0
@@ -26,20 +28,24 @@ def menu():
                         case 1:
                             newName = input('Insira o novo nome: ')
                             editProduct(product, newName, productId, opc)
+                            # os.system("cls")
                         case 2:
                             newValue = float(input('Insira o novo valor: ')) 
                             editProduct(product, newValue, productId, opc)
-                            
+                            # os.system("cls")
+                    os.system("cls")
             case 3:
                 productId = int(input('Informe o ID do produto: '))
                 deleteProduct(product, productId)
+                os.system("cls")
             case 4:
                 productId = int(input('Informe o ID do produto: '))
                 selectedProduct = searchProduct(product, productId)
+                os.system("cls")
                 print(selectedProduct)
-                
             case 5:
                 allProducts = listAllProducts(product)
+                os.system("cls")
                 print(allProducts)
             case 6:
                 break

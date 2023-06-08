@@ -1,10 +1,11 @@
 import sqlite3
 from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listAllProducts
+# from functions.user_db import getUserId
 import os
 
 product = sqlite3.connect('Product')
 
-def menu():
+def menu(userId):
     option = 0
     while option != 6:
         print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os produtos\n6 - Voltar ao Início\n")
@@ -14,7 +15,7 @@ def menu():
             case 1:
                 productName = input("Digite o nome do produto: ")
                 productValue = float(input("Digite o valor do produto: "))
-                createNewProduct(product, productName, productValue)
+                createNewProduct(product, productName, productValue, userId)
                 os.system("cls")
             case 2:
                 productId = int(input('Insira o ID do produto: '))

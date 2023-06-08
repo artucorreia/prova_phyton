@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from functions.user_db import sign_up, sign_in,display_users
+from functions.user_db import sign_up, sign_in, getUserId
 from menu.menu import menu
 
 user = sqlite3.connect('User')
@@ -16,15 +16,15 @@ def main():
         if option == 1:
             newName = input("Digite o novo usuário: ")
             newPassword = input("Digite a nova senha: ")
-            sign_up(user, newName, newPassword)
             os.system("cls")
+            sign_up(user, newName, newPassword)
         elif option == 2:
             name = input("Usuário: ")
             password = input("Senha: ")
             verify = sign_in(user, name, password)
             if verify:
                 os.system("cls")
-                menu()
+                menu(getUserId(user, name))
             else:
                 print('Não foi possível conectar-se\nUsuário ou Senha incorretos')
 

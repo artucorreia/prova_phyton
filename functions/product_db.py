@@ -1,7 +1,7 @@
-def createNewProduct(productConnection, name, value):
+def createNewProduct(productConnection, name, value, foreignkeyUserId):
     productCursor = productConnection.cursor()
-    sql = f'INSERT INTO Product(product_name, product_value) VALUES (?, ?)'
-    productCursor.execute(sql, [name, value])
+    sql = f'INSERT INTO Product(product_name, product_value, user_id) VALUES (?, ?, ?)'
+    productCursor.execute(sql, [name, value, foreignkeyUserId])
     productConnection.commit()
     return True
 
@@ -30,7 +30,8 @@ def searchProduct(productConnection, productId):
 
 def listAllProducts(productConnection):
     productCursor = productConnection.cursor()
-    sql = 'SELECT * FROM Product'
+    # userConnection = userConnection.cursor()
+    # sql = 'SELECT * FROM User INNER JOIN Product ON User.user_id = Product.user_id'
+    sql = 'SELECT product_id, product_name, product_name, user_name FROM Product INNER JOIN User ON Product.user_id = User.user_id'
     productCursor.execute(sql)
     return productCursor.fetchall()
-    

@@ -5,6 +5,13 @@ def createNewProduct(connection, name, value, foreignkeyUserId):
     connection.commit()
     return True
 
+def checkPermission(connection, productId):
+    cursor = connection.cursor()
+    sql = 'SELECT product_user_id FROM Product WHERE product_id = ?'
+    cursor.execute(sql, [productId])
+    return cursor.fetchall()
+
+
 def editProduct(connection, changes, productId, opc):    
     cursor = connection.cursor()
     match opc:

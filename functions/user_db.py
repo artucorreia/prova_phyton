@@ -1,33 +1,33 @@
-def verifyUserName(userConnection, name):
-    userCursor = userConnection.cursor()
+def verifyUserName(connection, name):
+    cursor = connection.cursor()
     sql = 'SELECT * FROM User WHERE user_name LIKE ?'
-    userCursor.execute(sql, [name])
-    return userCursor.fetchall()
+    cursor.execute(sql, [name])
+    return cursor.fetchall()
 
-def sign_up(userConnection, name, password):
-    if not verifyUserName(userConnection, name):
-        userCursor = userConnection.cursor()
+def sign_up(connection, name, password):
+    if not verifyUserName(connection, name):
+        cursor = connection.cursor()
         sql = f'INSERT INTO User(user_name, user_password) VALUES (?, ?)'
-        userCursor.execute(sql, [name.upper(), password.upper()])
-        userConnection.commit()
+        cursor.execute(sql, [name.upper(), password.upper()])
+        connection.commit()
     else:
         print('Erro ao criar conta\nUsuário não disponível')
     return True
 
-def sign_in(userConnection, name, password):
-    userCursor = userConnection.cursor()
+def sign_in(connection, name, password):
+    cursor = connection.cursor()
     sql = 'SELECT * FROM User WHERE user_name LIKE ? and user_password LIKE ?'
-    userCursor.execute(sql, [name, password])
-    return userCursor.fetchall()
+    cursor.execute(sql, [name, password])
+    return cursor.fetchall()
 
-def display_users(userConnection):
-    userCursor = userConnection.cursor()
+def display_users(connection):
+    cursor = connection.cursor()
     sql = 'SELECT * FROM User'
-    userCursor.execute(sql)
-    return userCursor.fetchall()
+    cursor.execute(sql)
+    return cursor.fetchall()
 
-def getUserId(userConnection, name):
-    userCursor = userConnection.cursor()
+def getUserId(connection, name):
+    cursor = connection.cursor()
     sql = 'SELECT user_id FROM User WHERE user_name LIKE ?'
-    userCursor.execute(sql, [name])
-    return userCursor.fetchall()[0][0]
+    cursor.execute(sql, [name])
+    return cursor.fetchall()[0][0]

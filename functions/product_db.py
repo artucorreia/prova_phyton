@@ -1,37 +1,44 @@
-def createNewProduct(productConnection, name, value, foreignkeyUserId):
-    productCursor = productConnection.cursor()
-    sql = f'INSERT INTO Product(product_name, product_value, user_id) VALUES (?, ?, ?)'
-    productCursor.execute(sql, [name, value, foreignkeyUserId])
-    productConnection.commit()
+def createNewProduct(connection, name, value, foreignkeyUserId):
+    cursor = connection.cursor()
+    sql = 'INSERT INTO Product(product_name, product_value, product_user_id) VALUES (?, ?, ?)'
+    cursor.execute(sql, [name, value, foreignkeyUserId])
+    connection.commit()
     return True
 
-def editProduct(productConnection, changes, productId, opc):    
-    productCursor = productConnection.cursor()
+def editProduct(connection, changes, productId, opc):    
+    cursor = connection.cursor()
     match opc:
         case 1: 
-            sql = 'UPDATE product SET product_name = ? WHERE product_id= ?'
-            productCursor.execute(sql, [changes, productId])
+            sql = 'UPDATE Product SET product_name = ? WHERE product_id= ?'
+            cursor.execute(sql, [changes, productId])
         case 2: 
-            sql = 'UPDATE product SET product_value = ? WHERE product_id = ?'
-            productCursor.execute(sql, [changes, productId])
-    productConnection.commit()
+            sql = 'UPDATE Product SET product_value = ? WHERE product_id = ?'
+            cursor.execute(sql, [changes, productId])
+    connection.commit()
 
-def deleteProduct(productConnection, productId):
+def deleteProduct(connection, productId):
     sql = 'DELETE FROM Product WHERE product_id = ?'
-    productCursor = productConnection.cursor()
-    productCursor.execute(sql, [productId])
-    productConnection.commit()
+    cursor = connection.cursor()
+    cursor.execute(sql, [productId])
+    connection.commit()
 
-def searchProduct(productConnection, productId):
-    productCursor = productConnection.cursor()
+def searchProduct(connection, productId):
+    cursor = connection.cursor()
     sql = 'SELECT * FROM Product WHERE product_id = ?'
-    productCursor.execute(sql, [productId])
-    return productCursor.fetchall()
+    cursor.execute(sql, [productId])
+    return cursor.fetchall()
 
-def listAllProducts(productConnection):
-    productCursor = productConnection.cursor()
-    # userConnection = userConnection.cursor()
-    # sql = 'SELECT * FROM User INNER JOIN Product ON User.user_id = Product.user_id'
-    sql = 'SELECT product_id, product_name, product_name, user_name FROM Product INNER JOIN User ON Product.user_id = User.user_id'
-    productCursor.execute(sql)
-    return productCursor.fetchall()
+def listAllProducts(connection):
+    cursor = connection.cursor()
+    sql = 'SELECT * FROM Product INNER JOIN User ON Product.product_user_id = User.user_id'
+    cursor.execute(sql)
+    return cursor.fetchall()
+
+def displayer(products, userId):
+    for row in products:
+        if row[3] == userId:
+            print('==================')
+            print('ID:', row[0])
+            print('Nome:', row[1])
+            print('Valor:', row[2])
+            print('==================')

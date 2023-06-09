@@ -1,9 +1,8 @@
 import sqlite3
-from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listAllProducts
-# from functions.user_db import getUserId
+from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listAllProducts, displayer
 import os
 
-product = sqlite3.connect('Product')
+connection = sqlite3.connect('data-base')
 
 def menu(userId):
     option = 0
@@ -15,12 +14,14 @@ def menu(userId):
             case 1:
                 productName = input("Digite o nome do produto: ")
                 productValue = float(input("Digite o valor do produto: "))
-                createNewProduct(product, productName, productValue, userId)
+                createNewProduct(connection, productName, productValue, userId)
                 os.system("cls")
             case 2:
                 productId = int(input('Insira o ID do produto: '))
                 opc = 0
                 while(opc != 3):
+                    os.system("cls")
+                    displayer(searchProduct(connection, productId), userId)
                     print('1 - Mudar o nome do produto')
                     print('2 - Mudar o valor do produto')
                     print('3 - Voltar ao Menu\n')
@@ -28,25 +29,24 @@ def menu(userId):
                     match opc:
                         case 1:
                             newName = input('Insira o novo nome: ')
-                            editProduct(product, newName, productId, opc)
-                            # os.system("cls")
+                            editProduct(connection, newName, productId, opc)
                         case 2:
                             newValue = float(input('Insira o novo valor: ')) 
-                            editProduct(product, newValue, productId, opc)
-                            # os.system("cls")
+                            editProduct(connection, newValue, productId, opc)
                     os.system("cls")
             case 3:
                 productId = int(input('Informe o ID do produto: '))
-                deleteProduct(product, productId)
+                deleteProduct(connection, productId)
                 os.system("cls")
+                print('Produto deletado com sucesso!')
             case 4:
                 productId = int(input('Informe o ID do produto: '))
-                selectedProduct = searchProduct(product, productId)
+                selectedProduct = searchProduct(connection, productId)
                 os.system("cls")
                 print(selectedProduct)
             case 5:
-                allProducts = listAllProducts(product)
+                allProducts = listAllProducts(connection)
                 os.system("cls")
-                print(allProducts)
+                displayer(allProducts, userId)
             case 6:
                 break

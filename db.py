@@ -1,29 +1,24 @@
 import sqlite3
 
-user = sqlite3.connect('User') 
-userCursor = user.cursor()
+connection = sqlite3.connect('data-base') 
+cursor = connection.cursor()
 
-userCursor.execute('''
+cursor.execute('''
           CREATE TABLE IF NOT EXISTS User(
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_name VARCHAR(50) UNIQUE,
-            user_password VARCHAR(20)
+            user_name VARCHAR(50) UNIQUE NOT NULL,
+            user_password VARCHAR(20) NOT NULL
           )
           ''')
 
-user.commit()
-
-product = sqlite3.connect('Product') 
-productCursor = product.cursor()
-
-productCursor.execute('''
+cursor.execute('''
           CREATE TABLE IF NOT EXISTS Product(
             product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            product_name VARCHAR(30),
-            product_value FLOAT,
-            user_id INTEGER,
-            FOREIGN KEY (user_id) REFERENCES User(user_id)
+            product_name VARCHAR(30) NOT NULL,
+            product_value FLOAT NOT NULL,
+            product_user_id INTEGER NOT NULL,
+            FOREIGN KEY (product_user_id) REFERENCES User(user_id)
           )
           ''')
 
-product.commit()
+cursor.commit()

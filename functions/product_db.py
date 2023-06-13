@@ -31,7 +31,7 @@ def deleteProduct(connection, productId):
 
 def searchProduct(connection, productId):
     cursor = connection.cursor()
-    sql = 'SELECT * FROM Product WHERE product_id = ?'
+    sql = 'SELECT * FROM Product INNER JOIN User ON Product.product_user_id = User.user_id AND product_id = ?'
     cursor.execute(sql, [productId])
     return cursor.fetchall()
 
@@ -49,7 +49,15 @@ def listAllProducts(connection):
 
 def displayer(products, userId):
     for row in products:
-        if userId == 0:
+        if userId != 0:
+            if row[4] == userId:
+                print('==================')
+                print('ID:', row[0])
+                print('Nome:', row[1])
+                print('Valor:', row[2])
+                print('Quantidade:', row[3])
+                print('==================')
+        else:
             print('==================')
             print('ID:', row[0])
             print('Nome:', row[1])
@@ -57,29 +65,23 @@ def displayer(products, userId):
             print('Quantidade:', row[3])
             print('Fornecedor:', row[6])
             print('==================')
-        elif row[4] == userId:
-            print('==================')
-            print('ID:', row[0])
-            print('Nome:', row[1])
-            print('Valor:', row[2])
-            print('Quantidade:', row[3])
-            print('==================')
 
-## compradores
-def verifyProductsQuantity(connection):
+# compradores
+def getProductQuantity(connection, productId):
     cursor = connection.cursor()
-    sql = 'SELECT product_quantity FROM Product'
-    cursor.execute(sql)
-    return cursor.fetchall()
+    sql = 'SELECT product_quantity FROM Product WHERE product_id = ?'
+    cursor.execute(sql, [productId])
+    return cursor.fetchall()[0][0]
 
 def getProductValue(connection, productId):
     cursor = connection.cursor()
     sql = 'SELECT product_value FROM Product WHERE product_id = ?'
     cursor.execute(sql, [productId])
-    return cursor.fetchall()
+    return cursor.fetchall()[0][0]
 
-def buyProducts(connection, productId, quantityTotal, quantity):
+def buyProduct(connection, productId, quantityTotal, quantity):
     cursor = connection.cursor()
     sql = 'UPDATE Product SET product_quantity = ? WHERE product_id = ?'
-    cursor.execute(sql, [quantityTotal - quantity, productId])
-    return cursor.fetchall()
+    newQuantity = quantityTotal - quantity
+    cursor.execute(sql, [newQuantity, productId])
+    connection.commit()

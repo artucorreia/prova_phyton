@@ -54,15 +54,13 @@ def menuFornecedor(userId):
                 productId = int(input('Informe o ID do produto: '))
                 selectedProduct = searchProduct(connection, productId)
                 os.system("cls")
-                print(selectedProduct)
+                displayer(selectedProduct, 0)
             case 5:
                 userProducts = listUserProducts(connection)
-                # print(userProducts)
                 os.system("cls")
                 displayer(userProducts, userId)
             case 6:
                 allProducts = listAllProducts(connection)
-                # print(allProducts)
                 os.system("cls")
                 displayer(allProducts, 0)
             case 7:

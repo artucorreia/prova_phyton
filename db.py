@@ -7,7 +7,8 @@ cursor.execute('''
           CREATE TABLE IF NOT EXISTS User(
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_name VARCHAR(50) UNIQUE NOT NULL,
-            user_password VARCHAR(20) NOT NULL
+            user_password VARCHAR(20) NOT NULL,
+            user_type INTEGER NOT NULL
           )
           ''')
 
@@ -16,6 +17,7 @@ cursor.execute('''
             product_id INTEGER PRIMARY KEY AUTOINCREMENT,
             product_name VARCHAR(30) NOT NULL,
             product_value FLOAT NOT NULL,
+            product_quantity INTEGER NOT NULL,
             product_user_id INTEGER NOT NULL,
             FOREIGN KEY (product_user_id) REFERENCES User(user_id)
           )

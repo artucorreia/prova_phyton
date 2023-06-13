@@ -1,20 +1,21 @@
-import sqlite3
-from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listAllProducts, displayer, checkPermission
+import sqlite3 
+from functions.product_db import createNewProduct, deleteProduct, editProduct, searchProduct, listUserProducts, listAllProducts, displayer, checkPermission
 import os
 
 connection = sqlite3.connect('data-base')
 
-def menu(userId):
+def menuFornecedor(userId):
     option = 0
-    while option != 6:
-        print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os produtos\n6 - Voltar ao Início\n")
+    while option != 7:
+        print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os meus produtos\n6 - Exibir todos os Produtos\n7 - Voltar ao Início")
         option = int(input("Digite a opção: "))
         os.system("cls")
         match option:
             case 1:
                 productName = input("Digite o nome do produto: ")
                 productValue = float(input("Digite o valor do produto: "))
-                createNewProduct(connection, productName, productValue, userId)
+                productQuantity = float(input("Digite a quantidade do produto: "))
+                createNewProduct(connection, productName, productValue, productQuantity, userId)
                 os.system("cls")
             case 2:
                 productId = int(input('Insira o ID do produto: '))
@@ -55,8 +56,14 @@ def menu(userId):
                 os.system("cls")
                 print(selectedProduct)
             case 5:
-                allProducts = listAllProducts(connection)
+                userProducts = listUserProducts(connection)
+                # print(userProducts)
                 os.system("cls")
-                displayer(allProducts, userId)
+                displayer(userProducts, userId)
             case 6:
+                allProducts = listAllProducts(connection)
+                # print(allProducts)
+                os.system("cls")
+                displayer(allProducts, 0)
+            case 7:
                 break

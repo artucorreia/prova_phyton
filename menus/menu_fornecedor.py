@@ -7,7 +7,7 @@ connection = sqlite3.connect('data-base')
 def menuFornecedor(userId):
     option = 0
     while option != 7:
-        print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os meus produtos\n6 - Exibir todos os Produtos\n7 - Voltar ao Início")
+        print("1 - Cadastrar Produto\n2 - Editar Produto\n3 - Remover Produto\n4 - Buscar Produto\n5 - Exibir todos os meus produtos\n6 - Exibir todos os produtos\n7 - Voltar ao Início")
         option = int(input("Digite a opção: "))
         os.system("cls")
         match option:
@@ -17,17 +17,19 @@ def menuFornecedor(userId):
                 productQuantity = float(input("Digite a quantidade do produto: "))
                 createNewProduct(connection, productName, productValue, productQuantity, userId)
                 os.system("cls")
+                print('Produto adicionado com sucesso!')
             case 2:
                 productId = int(input('Insira o ID do produto: '))
                 opc = 0
                 permission = (checkPermission(connection, productId)[0][0] == userId)
                 if permission:
-                    while(opc != 3):
+                    while(opc != 4):
                         os.system("cls")
                         displayer(searchProduct(connection, productId), userId)
                         print('1 - Mudar o nome do produto')
                         print('2 - Mudar o valor do produto')
-                        print('3 - Voltar ao Menu\n')
+                        print('3 - Alterar a quantidade do produto')
+                        print('4 - Voltar ao Menu\n')
                         opc = int(input('Digite a opção: '))
                         match opc:
                             case 1:
@@ -36,6 +38,9 @@ def menuFornecedor(userId):
                             case 2:
                                 newValue = float(input('Insira o novo valor: ')) 
                                 editProduct(connection, newValue, productId, opc)
+                            case 3:
+                                newQuantity = int(input('Insira a nova quantidade: '))
+                                editProduct(connection, newQuantity, productId, opc)
                         os.system("cls")
                 else:
                     os.system("cls")

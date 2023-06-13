@@ -21,6 +21,9 @@ def editProduct(connection, changes, productId, opc):
         case 2: 
             sql = 'UPDATE Product SET product_value = ? WHERE product_id = ?'
             cursor.execute(sql, [changes, productId])
+        case 3:
+            sql = 'UPDATE Product SET product_quantity = ? WHERE product_id = ?'
+            cursor.execute(sql, [changes, productId])
     connection.commit()
 
 def deleteProduct(connection, productId):

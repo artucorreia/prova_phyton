@@ -59,7 +59,10 @@ def menuFornecedor(userId):
                 productId = int(input('Informe o ID do produto: '))
                 selectedProduct = searchProduct(connection, productId)
                 os.system("cls")
-                displayer(selectedProduct, 0)
+                if not selectedProduct:
+                    print('Produto não encontrado!')
+                else:
+                    displayer(selectedProduct, 0)
             case 5:
                 userProducts = listUserProducts(connection)
                 os.system("cls")

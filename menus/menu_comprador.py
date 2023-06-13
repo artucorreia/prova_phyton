@@ -2,7 +2,6 @@ import sqlite3
 import os
 from functions.product_db import searchProduct, listAllProducts, displayer, buyProduct, getProductQuantity, getProductValue
 
-
 connection = sqlite3.connect('data-base')
 
 def menuComprador():
@@ -16,12 +15,17 @@ def menuComprador():
                 productId = int(input('Informe o ID do produto: '))
                 selectedProduct = searchProduct(connection, productId)
                 os.system("cls")
+                if not selectedProduct:
+                    print('Produto não encontrado!')
+                else:
+                    displayer(selectedProduct, 0)
                 displayer(selectedProduct, 0)
             case 2:
                 productId = int(input('Informe o ID do produto: '))
                 quantity = int(input('Informe a quantidade: '))
                 quantityTotal = getProductQuantity(connection, productId)
                 if quantity > quantityTotal:
+                    os.system("cls")
                     print('Não foi possível realizar a compra!\nInforme uma quantidade válida!')
                 else:
                     productValue = getProductValue(connection, productId)
@@ -42,5 +46,3 @@ def menuComprador():
                 allProducts = listAllProducts(connection)
                 os.system("cls")
                 displayer(allProducts, 0)
-            case 4:
-                break
